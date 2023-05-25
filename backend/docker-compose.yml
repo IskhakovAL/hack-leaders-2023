@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+
+  lct_db:
+    image: postgis/postgis
+    container_name: lct_db
+    restart: unless-stopped
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    networks:
+      - lct
+
+networks:
+  lct:
