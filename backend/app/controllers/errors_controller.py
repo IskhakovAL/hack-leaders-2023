@@ -31,67 +31,68 @@ user_not_create_exception = HTTPException(
 )
 
 user_exists_exception = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
+    status_code=status.HTTP_400_BAD_REQUEST,
     detail='User with this email already exists'
 )
 
-city_not_create_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='Could not create city'
+permission_denied = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail='Operation not permitted'
 )
 
-city_exists_exception = HTTPException(
+metro_not_create_exception = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
-    detail='This city already exists'
+    detail='Could not create metro'
+)
+
+metro_exists_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='This metro is already exists'
+)
+
+industry_not_create_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='Could not create industry'
+)
+
+industry_exists_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='This industry is already exists'
+)
+
+equipment_not_create_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='Could not create equipment'
+)
+
+equipment_exists_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='This equipment is already exists'
+)
+
+accessibility_not_create_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='Could not accessibility industry'
+)
+
+accessibility_exists_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='This accessibility is already exists'
+)
+
+facility_not_create_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='Could not create facility'
+)
+
+facility_exists_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='This facility is already exists'
+)
+
+platform_not_create_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='Could not create platform'
 )
 
 
-interest_not_create_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='Could not create interest'
-)
-
-interest_not_add_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='Could not add interests'
-)
-
-interest_exists_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='This interest already exists'
-)
-
-no_interest_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='Wrong interest id'
-)
-
-form_not_create_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='Could not create form'
-)
-
-form_exists_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='This form already exists'
-)
-
-photo_not_add_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='Could not add photo'
-)
-
-no_photo_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='No photo'
-)
-
-like_not_create_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='Could not create like'
-)
-
-match_not_create_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail='Could not create match'
-)

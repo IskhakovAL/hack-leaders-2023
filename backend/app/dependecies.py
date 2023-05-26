@@ -8,6 +8,8 @@ from app.schemas import TokenData
 
 from app.controllers.security_controller import get_current_user
 
+from app.controllers.errors_controller import permission_denied
+
 
 def get_db():
     db = SessionLocal()
@@ -17,10 +19,10 @@ def get_db():
         db.close()
 
 
-# class RoleChecker:
-#     def __init__(self, allowed_roles: list):
-#         self.allowed_roles = allowed_roles
-#
-#     def __call__(self, user: Annotated[TokenData, get_current_user]:
-#         if user.role not in self.allowed_roles:
-#             raise HTTPException(status_code=403, detail="Operation not permitted")
+class RoleChecker:
+    def __init__(self, allowed_roles: list):
+        self.allowed_roles = allowed_roles
+
+    def __call__(self, user: Annotated[TokenData, Depends(get_current_user)]):
+        if user.role not in self.allowed_roles:
+            raise permission_denied
