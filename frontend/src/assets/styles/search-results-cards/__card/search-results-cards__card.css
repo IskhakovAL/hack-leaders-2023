@@ -1,0 +1,5 @@
+.search-results-cards__card {
+    width: 278px;
+    display: flex;
+    flex-direction: column;
+}

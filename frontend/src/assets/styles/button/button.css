@@ -1,0 +1,18 @@
+.button {
+    box-sizing: border-box;
+    padding: 10px 10px 0;
+    display: inline-flex;
+    margin: 0;
+    border: 0;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.button:disabled {
+    background-color: #CACACA;
+    cursor: default;
+}
