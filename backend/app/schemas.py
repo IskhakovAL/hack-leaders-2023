@@ -92,8 +92,26 @@ class Platform(BaseModel):
     area: int
     phone: str
     address: str
+    verified: bool
     metro: list[Metro]
     industry: list[Industry]
-    equipments: list[Equipments]
-    accessibilitie: list[Accessibilities]
-    facilities: list[Facilities]
+    equipments: Optional[list[Equipments]] = None
+    accessibilities: Optional[list[Accessibilities]] = None
+    facilities: Optional[list[Facilities]] = None
+    photos: list[str]
+
+
+class TimeSlot(BaseDB):
+    from_time: datetime
+    to_time: datetime
+
+
+class Bookings(BaseModel):
+    booking_id: int
+    verified: bool
+    platform: Platform
+    time_slots: Optional[list[TimeSlot]] = None
+    equipments: Optional[list[Equipments]] = None
+    accessibilities: Optional[list[Accessibilities]] = None
+    facilities: Optional[list[Facilities]] = None
+

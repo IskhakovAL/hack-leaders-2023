@@ -95,4 +95,17 @@ platform_not_create_exception = HTTPException(
     detail='Could not create platform'
 )
 
+platform_not_exists_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='This platform does not exist'
+)
 
+time_slot_exists_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='This time slot already exist'
+)
+
+booking_not_create_exception = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='Could not create booking'
+)

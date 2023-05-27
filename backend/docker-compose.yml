@@ -2,6 +2,32 @@ version: "3.8"
 
 services:
 
+  nginx:
+    image: nginx:1.19.0-alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx_logs:/var/log/nginx
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+    networks:
+      - lct
+
+
+  lct_app:
+    build: .
+    container_name: lct_app
+    restart: unless-stopped
+    links:
+      - lct_db
+    env_file:
+      - .env
+    expose:
+      - 8085
+    networks:
+      - lct
+
   lct_db:
     image: postgis/postgis
     container_name: lct_db
