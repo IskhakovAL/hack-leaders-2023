@@ -86,12 +86,13 @@ export default {
 
           if (this.getIsLogin) {
             await this.fetchUser();
-            const userRole = this.getUser().role.title;
-            if (userRole === "landlord") {
-              await this.$router.push('/profile')
-            } else if (userRole === "tenant") {
-              await this.$router.push('/search/map')
-            }
+            await this.$router.push('/search/map')
+            // const userRole = this.getUser().role.title;
+            // if (userRole === "landlord") {
+            //   await this.$router.push('/profile')
+            // } else if (userRole === "tenant") {
+            //   await this.$router.push('/search/map')
+            // }
           }
 
         }

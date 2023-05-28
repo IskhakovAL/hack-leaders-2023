@@ -4,7 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.views import node, users, platforms
 
 
-app = FastAPI()
+app = FastAPI(docs_url='/api/docs',
+              redoc_url='/api/redoc',
+              openapi_url='/api/openapi.json')
 
 app.add_middleware(
     CORSMiddleware,

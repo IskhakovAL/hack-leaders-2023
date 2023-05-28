@@ -11,6 +11,7 @@ services:
     volumes:
       - ./nginx_logs:/var/log/nginx
       - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./dist:/var/www/lct_build
     networks:
       - lct
 

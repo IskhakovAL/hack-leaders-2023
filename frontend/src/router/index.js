@@ -104,7 +104,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     if ((to.path.includes("signin") || to.path.includes("signup")) && store.getters.getIsLogin === true) {
-      next('/profile')
+      next('/search/map')
     } else {
       next()
     }
