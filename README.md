@@ -34,5 +34,5 @@ npm run build
 ```
 
 ### Авторство
-dora.team, 2023
+dorateam, 2023
 
