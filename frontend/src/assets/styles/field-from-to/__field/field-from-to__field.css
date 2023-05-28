@@ -1,0 +1,39 @@
+.field-from-to__field {
+    padding-left: 5px;
+    width: 50%;
+    height: 24px;
+    box-sizing: border-box;
+    border: #FF4261 1px solid;
+    border-radius: 6px;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+}
+
+.field-from-to__field::placeholder {
+    padding-left: 5px;
+    font-size: 12px;
+    line-height: 15px;
+    color: #CACACA;
+}
+
+.field-from-to__field::-webkit-input-placeholder {
+    padding-left: 5px;
+    font-size: 12px;
+    line-height: 15px;
+    color: #CACACA;
+}
+
+.field-from-to__field::-moz-placeholder {
+    padding-left: 5px;
+    font-size: 12px;
+    line-height: 15px;
+    color: #CACACA;
+}
+
+.field-from-to__field::-ms-input-placeholder {
+    padding-left: 5px;
+    font-size: 12px;
+    line-height: 15px;
+    color: #CACACA;
+}

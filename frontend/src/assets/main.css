@@ -17,6 +17,10 @@
 @import url("./styles/button/_color/button_color_pink.css");
 @import url("./styles/button/_color/button_color_white.css");
 
+@import url("./styles/field-from-to/field-from-to.css");
+@import url("./styles/field-from-to/__title/field-from-to__title.css");
+@import url("./styles/field-from-to/__field/field-from-to__field.css");
+
 @import url("./styles/registration/registration.css");
 @import url("./styles/registration/__title/registration__title.css");
 

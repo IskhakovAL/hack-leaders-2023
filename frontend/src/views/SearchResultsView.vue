@@ -1,22 +1,25 @@
 <template>
-  <div style="position: relative;">
+  <div style="position: relative; margin-top: 65px;">
     <BaseHeader />
-    <BaseFormMultiselect />
-    <SearchResultCards :cards="cards" />
+    <!-- <BaseFormMultiselect /> -->
+    <SearchResultsFilters />
+    <SearchResultsCards :cards="cards" />
   </div>
 </template>
   
 <script>
 import BaseHeader from "@/components/BaseHeader.vue";
-import SearchResultCards from "@/components/SearchResultCards.vue";
-import BaseFormMultiselect from "@/components/BaseFormMultiselect.vue";
+import SearchResultsFilters from "@/components/SearchResultsFilters.vue";
+import SearchResultsCards from "@/components/SearchResultsCards.vue";
+// import BaseFormMultiselect from "@/components/BaseFormFieldMultiselect.vue";
 export default {
   name: "SearchResultsView",
 
   components: {
     BaseHeader,
-    SearchResultCards,
-    BaseFormMultiselect
+    SearchResultsFilters,
+    SearchResultsCards
+    // BaseFormMultiselect
   },
 
   data() {
