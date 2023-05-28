@@ -1,7 +1,7 @@
 <template>
     <div>
         <form class="form" @submit.prevent="submit" novalidate>
-            <div class="form__column">
+            <div class="form__column" style="width: 275px;">
                 <base-form-field-email v-model="form.email" :v="$v.form.email" />
                 <base-form-field-password v-model="form.password" :v="$v.form.password" />
             </div>
@@ -55,15 +55,16 @@ export default {
         data.append("email", this.form.email);
         data.append("password", this.form.password);
         await this.signIn(data);
-        if (this.getIsLogin) {
-          await this.fetchUser();
-          const userRole = this.getUser().role.title;
-          if (userRole === "landlord") {
-            await this.$router.push('/profile')
-          } else if (userRole === "tenant") {
-            await this.$router.push('/search/map')
-          }
-        }
+        await this.$router.push('/search/map')
+        // if (this.getIsLogin) {
+        //   await this.fetchUser();
+        //   const userRole = this.getUser().role.title;
+        //   if (userRole === "landlord") {
+        //     await this.$router.push('/profile')
+        //   } else if (userRole === "tenant") {
+        //     await this.$router.push('/search/map')
+        //   }
+        // }
       }
     }
 };

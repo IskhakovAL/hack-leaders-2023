@@ -5,9 +5,8 @@ import store from "../store"
 Vue.use(VueRouter)
 
 const routes = [
-  // УДАЛИТЬ УДАЛИТЬ УДАЛИТЬ УДАЛИТЬ
   {
-    path: '/landing',
+    path: '/',
     name: 'landing',
     component: () => import('../views/LandingView.vue')
   },

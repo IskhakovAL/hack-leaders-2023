@@ -1,14 +1,14 @@
 <template>
     <div>
         <form class="form" @submit.prevent="submit" novalidate>
-            <div class="form__column">
+            <div class="form__column" style="width: 275px;">
                 <signup-form-field-first-name v-model="form.firstName" :v="$v.form.firstName" />
                 <signup-form-field-surname v-model="form.surname" :v="$v.form.surname" />
                 <signup-form-field-second-name v-model="form.secondName" :v="$v.form.secondName" />
                 <base-form-field-email v-model="form.email" :v="$v.form.email" />
                 <signup-form-field-phone v-model="form.phone" :v="$v.form.phone" />
             </div>
-            <div class="form__column">
+            <div class="form__column" style="width: 275px;">
                 <signup-form-field-position v-model="form.position" :v="$v.form.position" />
                 <signup-form-field-company v-model="form.company" :v="$v.form.company" />
                 <signup-form-field-inn v-model="form.inn" :v="$v.form.inn" />

@@ -1,7 +1,7 @@
 <template>
     <div>
         <form class="form" @submit.prevent="submit" novalidate>
-            <div class="form__column">
+            <div class="form__column" style="width: 275px;">
                 <signup-form-field-first-name v-model="form.firstName" :v="$v.form.firstName" />
                 <signup-form-field-surname v-model="form.surname" :v="$v.form.surname" />
                 <signup-form-field-second-name v-model="form.secondName" :v="$v.form.secondName" />
