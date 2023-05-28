@@ -1,0 +1,5 @@
+.field-from-to {
+    display: flex;
+    width: 174px;
+    flex-wrap: wrap;
+}
