@@ -7,31 +7,28 @@
     font-weight: 400;
     font-size: 12px;
     line-height: 15px;
+    padding-left: 10px;
 }
 
 .field-from-to__field::placeholder {
-    padding-left: 10px;
     font-size: 12px;
     line-height: 15px;
     color: #CACACA;
 }
 
 .field-from-to__field::-webkit-input-placeholder {
-    padding-left: 10px;
     font-size: 12px;
     line-height: 15px;
     color: #CACACA;
 }
 
 .field-from-to__field::-moz-placeholder {
-    padding-left: 10px;
     font-size: 12px;
     line-height: 15px;
     color: #CACACA;
 }
 
 .field-from-to__field::-ms-input-placeholder {
-    padding-left: 10px;
     font-size: 12px;
     line-height: 15px;
     color: #CACACA;

@@ -5,6 +5,12 @@ import store from "../store"
 Vue.use(VueRouter)
 
 const routes = [
+  // УДАЛИТЬ УДАЛИТЬ УДАЛИТЬ УДАЛИТЬ
+  {
+    path: '/landing',
+    name: 'landing',
+    component: () => import('../views/LandingView.vue')
+  },
   {
     path: '/signup/landlord',
     name: 'signup-landlord',
