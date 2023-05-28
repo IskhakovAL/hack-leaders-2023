@@ -6,9 +6,13 @@ from sqlalchemy import select
 
 from datetime import datetime
 
+import requests as r
+
 from typing import Optional
 
 import os
+
+from app.config import YANDEX_API_KEY
 
 from app.models import Platforms, Metro, Industry, Photos, Equipments, Accessibilities, Facilities, \
     PlatformsMetro, PlatformsIndustry, PlatformsFacilities, PlatformsEquipments, PlatformsPhotos, \
@@ -144,6 +148,9 @@ def platform_response(platform: Platforms):
         'area': platform.area,
         'address': platform.address,
         'phone': platform.phone,
+        'price': platform.price,
+        'latitude': platform.latitude,
+        'longitude': platform.longitude,
         'verified': platform.verified,
         'metro': [element.metro for element in platform.platforms_metro],
         'industry': [element.industry for element in platform.platforms_industry],
@@ -187,6 +194,7 @@ def create_platform(db: Session,
                     area: int,
                     phone: str,
                     address: str,
+                    price: int,
                     metro_ids: list[int],
                     industry_ids: list[int],
                     equipments_ids: list[int],
@@ -194,6 +202,20 @@ def create_platform(db: Session,
                     facilities_ids: list[int]):
     try:
         landlord_id = get_landlord_id(db, user_id)
+        geocoder_url = 'https://geocode-maps.yandex.ru/1.x'
+        params = {
+            'apikey': YANDEX_API_KEY,
+            'format': 'json',
+            'geocode': address
+        }
+        coords_req = r.get(geocoder_url, params=params)
+
+        latitude = None
+        longitude = None
+        if coords_req.status_code == 200:
+            coords = coords_req.json()['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']
+            latitude, longitude = coords['pos'].split()[::-1]
+
         platform = Platforms(
             title=title,
             description=description,
@@ -202,7 +224,10 @@ def create_platform(db: Session,
             address=address,
             phone=phone,
             landlord_id=landlord_id,
-            verified=False
+            verified=False,
+            price=price,
+            latitude=latitude,
+            longitude=longitude
         )
         db.add(platform)
         db.commit()
@@ -237,16 +262,18 @@ def create_platform(db: Session,
                 ))
         db.commit()
         for n, photo in enumerate(photos, 1):
-            photo_path = os.path.join(os.getcwd(), 'data', f'platform_{platform.id}_{n}.jpg')
-            new_photo = Photos(src=photo_path)
+            photo_name = f'platform_{platform.id}_{n}.jpg'
+            photo_path = os.path.join(os.getcwd(), 'data', photo_name)
+            with open(photo_path, 'wb') as file:
+                file.write(photo)
+            new_photo = Photos(src=photo_name)
             db.add(new_photo)
             db.commit()
             db.add(PlatformsPhotos(
                 platform_id=platform.id,
                 photo_id=new_photo.id
             ))
-            with open(photo_path, 'wb') as file:
-                file.write(photo)
+
         db.commit()
 
         return platform_response(platform)
@@ -290,7 +317,8 @@ def get_platforms_search(db: Session):
 
 def get_platforms_photo(db: Session, photo_id: int):
     photo = db.scalars(select(Photos).where(Photos.id == photo_id)).first()
-    with open(photo.src, 'rb') as file:
+    photo_path = os.path.join(os.getcwd(), 'data', photo.src)
+    with open(photo_path, 'rb') as file:
         return file.read()
 
 
@@ -298,82 +326,82 @@ def get_platforms_photo(db: Session, photo_id: int):
 
 
 # Метод оформления брони на площадку
-def create_platform_booking(db: Session,
-                            user_id: int,
-                            platform_id: int,
-                            from_date: str,
-                            to_date: str,
-                            equipments_ids: list[int],
-                            accessibilities_ids: list[int],
-                            facilities_ids: list[int]):
-    tenant_id = get_tenant_id(db, user_id)
-    platform = db.scalars(select(Platforms).where(Platforms.id == platform_id)).first()
-    if not platform:
-        raise platform_not_exists_exception
-    landlord_id = platform.landlord_id
-    date_format = '%d.%m.%Y'
-    from_date_datetime = datetime.strptime(from_date, date_format)
-    to_date_datetime = datetime.strptime(to_date, date_format)
-    try:
-        if db.scalars(
-                select(PlatformsBusySlots). \
-                        where(PlatformsBusySlots.platform_id == platform_id). \
-                        where(PlatformsBusySlots.from_time == from_date_datetime). \
-                        where(PlatformsBusySlots.to_time == to_date_datetime)
-        ).first():
-            raise time_slot_exists_exception
-        busy_slot = PlatformsBusySlots(
-            platform_id=platform_id,
-            from_time=from_date_datetime,
-            to_time=to_date_datetime
-        )
-        db.add(busy_slot)
-        db.commit()
-
-        booking = Bookings(
-            paid=False,
-            tenant_id=tenant_id,
-            landlord_id=landlord_id,
-            platform_id=platform_id,
-            time_slot_id=busy_slot.id
-        )
-        db.add(booking)
-        db.commit()
-
-        if equipments_ids:
-            for equipment_id in equipments_ids:
-                db.add(BookingsEquipments(
-                    booking_id=booking.id,
-                    equipment_id=equipment_id
-                ))
-        if accessibilities_ids:
-            for accessibility_id in accessibilities_ids:
-                db.add(BookingsAccessibilities(
-                    booking_id=booking.id,
-                    accessibility_id=accessibility_id
-                ))
-        if facilities_ids:
-            for facility_id in facilities_ids:
-                db.add(BookingsFacilities(
-                    booking_id=booking.id,
-                    facility_id=facility_id
-                ))
-        db.commit()
-
-        return booking_response(platform, busy_slot, booking)
-
-    except SQLAlchemyError as e:
-        print(e)
-        raise booking_not_create_exception
-
-
-def get_platform_bookings_landlord(db: Session, user_id: int):
-    landlord_id = get_landlord_id(db, user_id)
-    bookings = db.scalars(select(Bookings).where(Bookings.landlord_id == landlord_id)).all()
-    resp = []
-    for booking in bookings:
-        resp.append(booking_response(booking.platforms, booking))
-    return resp
+# def create_platform_booking(db: Session,
+#                             user_id: int,
+#                             platform_id: int,
+#                             from_date: str,
+#                             to_date: str,
+#                             equipments_ids: list[int],
+#                             accessibilities_ids: list[int],
+#                             facilities_ids: list[int]):
+#     tenant_id = get_tenant_id(db, user_id)
+#     platform = db.scalars(select(Platforms).where(Platforms.id == platform_id)).first()
+#     if not platform:
+#         raise platform_not_exists_exception
+#     landlord_id = platform.landlord_id
+#     date_format = '%d.%m.%Y'
+#     from_date_datetime = datetime.strptime(from_date, date_format)
+#     to_date_datetime = datetime.strptime(to_date, date_format)
+#     try:
+#         if db.scalars(
+#                 select(PlatformsBusySlots). \
+#                         where(PlatformsBusySlots.platform_id == platform_id). \
+#                         where(PlatformsBusySlots.from_time == from_date_datetime). \
+#                         where(PlatformsBusySlots.to_time == to_date_datetime)
+#         ).first():
+#             raise time_slot_exists_exception
+#         busy_slot = PlatformsBusySlots(
+#             platform_id=platform_id,
+#             from_time=from_date_datetime,
+#             to_time=to_date_datetime
+#         )
+#         db.add(busy_slot)
+#         db.commit()
+#
+#         booking = Bookings(
+#             paid=False,
+#             tenant_id=tenant_id,
+#             landlord_id=landlord_id,
+#             platform_id=platform_id,
+#             time_slot_id=busy_slot.id
+#         )
+#         db.add(booking)
+#         db.commit()
+#
+#         if equipments_ids:
+#             for equipment_id in equipments_ids:
+#                 db.add(BookingsEquipments(
+#                     booking_id=booking.id,
+#                     equipment_id=equipment_id
+#                 ))
+#         if accessibilities_ids:
+#             for accessibility_id in accessibilities_ids:
+#                 db.add(BookingsAccessibilities(
+#                     booking_id=booking.id,
+#                     accessibility_id=accessibility_id
+#                 ))
+#         if facilities_ids:
+#             for facility_id in facilities_ids:
+#                 db.add(BookingsFacilities(
+#                     booking_id=booking.id,
+#                     facility_id=facility_id
+#                 ))
+#         db.commit()
+#
+#         return booking_response(platform, busy_slot, booking)
+#
+#     except SQLAlchemyError as e:
+#         print(e)
+#         raise booking_not_create_exception
+#
+#
+# def get_platform_bookings_landlord(db: Session, user_id: int):
+#     landlord_id = get_landlord_id(db, user_id)
+#     bookings = db.scalars(select(Bookings).where(Bookings.landlord_id == landlord_id)).all()
+#     resp = []
+#     for booking in bookings:
+#         resp.append(booking_response(booking.platforms, booking))
+#     return resp
 
 
 # Метод для получения площадок, которые арендовал арендатор

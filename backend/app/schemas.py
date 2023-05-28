@@ -92,6 +92,9 @@ class Platform(BaseModel):
     area: int
     phone: str
     address: str
+    price: int
+    latitude: Optional[str] = None
+    longitude: Optional[str] = None
     verified: bool
     metro: list[Metro]
     industry: list[Industry]

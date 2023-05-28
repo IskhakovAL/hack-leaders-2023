@@ -17,8 +17,7 @@ from app.controllers.security_controller import get_current_user
 
 from app.controllers.platforms_controller import create_metro, get_metro, create_equipment, get_equipments, \
     create_industry, get_industry, create_facility, get_facilities, create_accessibilities, get_accessibilities, \
-    create_platform, get_platforms_landlord, verify_platform, get_platforms_search, get_platforms_photo, \
-    create_platform_booking, get_platform_bookings_landlord
+    create_platform, get_platforms_landlord, verify_platform, get_platforms_search, get_platforms_photo
 
 platforms = APIRouter(
     prefix='/api/platforms',
@@ -122,6 +121,7 @@ def api_create_platform(db: Annotated[Session, Depends(get_db)],
                         area: Annotated[int, Form()],
                         phone: Annotated[str, Form()],
                         address: Annotated[str, Form()],
+                        price: Annotated[int, Form()],
                         metro_ids: Annotated[list[int], Form()],
                         industry_ids: Annotated[Optional[list[int]], Form()] = None,
                         equipments_ids: Annotated[Optional[list[int]], Form()] = None,
@@ -129,7 +129,7 @@ def api_create_platform(db: Annotated[Session, Depends(get_db)],
                         facilities_ids: Annotated[Optional[list[int]], Form()] = None):
     try:
         return create_platform(
-            db, photos, current_user.user_id, title, description, capacity, area, phone, address, metro_ids,
+            db, photos, current_user.user_id, title, description, capacity, area, phone, address, price, metro_ids,
             industry_ids, equipments_ids,
             accessibilities_ids, facilities_ids)
     except HTTPException as e:
@@ -155,34 +155,33 @@ def api_search_platforms(db: Annotated[Session, Depends(get_db)],
     return get_platforms_search(db)
 
 
-@platforms.get('/photo/{photo_id}', dependencies=[Depends(all_roles)])
+@platforms.get('/photo/{photo_id}')
 def api_photo_platforms(db: Annotated[Session, Depends(get_db)],
-                        photo_id: int,
-                        current_user: Annotated[TokenData, Depends(get_current_user)]):
+                        photo_id: int):
     photo = get_platforms_photo(db, photo_id)
     photo_stream = BytesIO(photo)
     return StreamingResponse(content=photo_stream, media_type='image/jpeg')
 
 
-@platforms.post('/bookings', response_model=list[Bookings], dependencies=[Depends(tenant_role)])
-def api_create_platform_booking(db: Annotated[Session, Depends(get_db)],
-                                current_user: Annotated[TokenData, Depends(get_current_user)],
-                                platform_id: Annotated[int, Form()],
-                                from_date: Annotated[str, Form()],
-                                to_date: Annotated[str, Form()],
-                                equipments_ids: Annotated[Optional[list[int]], Form()] = None,
-                                accessibilities_ids: Annotated[Optional[list[int]], Form()] = None,
-                                facilities_ids: Annotated[Optional[list[int]], Form()] = None):
-    try:
-        return create_platform_booking(
-            db, current_user.user_id, platform_id, from_date, to_date, equipments_ids, accessibilities_ids,
-            facilities_ids
-        )
-    except HTTPException as e:
-        raise e
-
-
-@platforms.get('/bookings/landlord', response_model=list[Bookings], dependencies=[Depends(landlord_role)])
-def api_landlord_bookings(db: Annotated[Session, Depends(get_db)],
-                          current_user: Annotated[TokenData, Depends(get_current_user)]):
-    return get_platform_bookings_landlord(db, current_user.user_id)
+# @platforms.post('/bookings', response_model=list[Bookings], dependencies=[Depends(tenant_role)])
+# def api_create_platform_booking(db: Annotated[Session, Depends(get_db)],
+#                                 current_user: Annotated[TokenData, Depends(get_current_user)],
+#                                 platform_id: Annotated[int, Form()],
+#                                 from_date: Annotated[str, Form()],
+#                                 to_date: Annotated[str, Form()],
+#                                 equipments_ids: Annotated[Optional[list[int]], Form()] = None,
+#                                 accessibilities_ids: Annotated[Optional[list[int]], Form()] = None,
+#                                 facilities_ids: Annotated[Optional[list[int]], Form()] = None):
+#     try:
+#         return create_platform_booking(
+#             db, current_user.user_id, platform_id, from_date, to_date, equipments_ids, accessibilities_ids,
+#             facilities_ids
+#         )
+#     except HTTPException as e:
+#         raise e
+#
+#
+# @platforms.get('/bookings/landlord', response_model=list[Bookings], dependencies=[Depends(landlord_role)])
+# def api_landlord_bookings(db: Annotated[Session, Depends(get_db)],
+#                           current_user: Annotated[TokenData, Depends(get_current_user)]):
+#     return get_platform_bookings_landlord(db, current_user.user_id)
