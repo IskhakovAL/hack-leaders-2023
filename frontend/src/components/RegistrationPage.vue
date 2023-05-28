@@ -11,7 +11,7 @@
         <div style="margin-top: 16px">
             <registration-form-signin v-if="!form.isSignup" style="display: inline-block; vertical-align: top;" />
             <registration-form-signup-short v-else-if="!form.isLong" style="display: inline-block; vertical-align: top;" />
-            <registration-form-signup-long v-else style="display: inline-block; vertical-align: top;"/>
+            <registration-form-signup-long is-landlord="is-landlord" v-else style="display: inline-block; vertical-align: top;"/>
             <router-link v-if="button" class="button button_size_m button_color_white" style="margin-left: 20px;" :to="button.link">{{ button.text }}</router-link>
         </div>
     </div>
@@ -42,7 +42,8 @@ export default {
         button: {
             link: String,
             text: String
-        }
+        },
+        isLandlord: Boolean
     },
 
     components: {
@@ -52,6 +53,7 @@ export default {
         RegistrationFormSignupShort,
         RegistrationFormSignupLong
     },
-};
+
+}
 </script>
     

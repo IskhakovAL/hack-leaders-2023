@@ -7,6 +7,7 @@
                 <signup-form-field-second-name v-model="form.secondName" :v="$v.form.secondName" />
                 <base-form-field-email v-model="form.email" :v="$v.form.email" />
                 <signup-form-field-phone v-model="form.phone" :v="$v.form.phone" />
+                <base-form-field-password v-model="form.password" :v="$v.form.password" />
             </div>
             <div class="form__column">
                 <button class="button button_size_m button_color_pink" type="submit" :disabled="this.$v.$invalid">Создать аккаунт</button>
@@ -23,11 +24,14 @@ import SignupFormFieldSurname from "./SignupFormFieldSurname.vue";
 import SignupFormFieldSecondName from "./SignupFormFieldSecondName.vue";
 import BaseFormFieldEmail from "./BaseFormFieldEmail.vue";
 import SignupFormFieldPhone from "./SignupFormFieldPhone.vue";
+import {mapActions, mapGetters} from "vuex";
+import BaseFormFieldPassword from "@/components/BaseFormFieldPassword.vue";
 
 export default {
     name: "SignupFormShort",
 
     components: {
+      BaseFormFieldPassword,
         SignupFormFieldFirstName,
         SignupFormFieldSurname,
         SignupFormFieldSecondName,
@@ -42,7 +46,8 @@ export default {
                 surname: "",
                 secondName: "",
                 email: "",
-                phone: ""
+                phone: "",
+                password: ""
             }
         };
     },
@@ -54,17 +59,41 @@ export default {
             secondName: { required, isTextCorrect },
             email: { required, email },
             phone: { required, isPhoneEntered },
+            password: { required }
         }
     },
 
     methods: {
-        submit() {
+      ...mapActions(["signIn", "fetchUser"]),
+      ...mapGetters(["getIsLogin", "getUser"]),
+        async submit() {
             console.log("submitted");
             this.$v.form.$touch();
             // if its still pending or an error is returned do not submit
             if (this.$v.form.$pending || this.$v.form.$error) return;
             // to form submit after this
-            alert("Form submitted");
+            const data = new FormData();
+            data.append("email", this.form.email);
+            data.append("password", this.form.password);
+            data.append("repeat_password", this.form.password);
+            data.append("juridical", false);
+            data.append("landlord", false);
+            data.append("first_name", this.form.firstName);
+            data.append("second_name", this.form.secondName);
+            data.append("phone", this.form.phone);
+            data.append("surname", this.form.surname);
+            await this.signUp(data);
+
+          if (this.getIsLogin) {
+            await this.fetchUser();
+            const userRole = this.getUser().role.title;
+            if (userRole === "landlord") {
+              await this.$router.push('/profile')
+            } else if (userRole === "tenant") {
+              await this.$router.push('/search/map')
+            }
+          }
+
         }
     }
 };

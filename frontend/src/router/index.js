@@ -1,23 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import store from "../store"
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
   {
     path: '/signup/landlord',
     name: 'signup-landlord',
@@ -51,32 +38,48 @@ const routes = [
   {
     path: '/signin/tenant-natural',
     name: 'signin-tenant-natural',
-    component: () => import('../views/SigninTenantNaturalView.vue')
+    component: () => import('../views/SigninTenantNaturalView.vue'),
   },
   {
     path: '/profile',
     name: 'profile',
-    component: () => import('../views/ProfileView.vue')
+    component: () => import('../views/ProfileView.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/search/map',
     name: 'search-map',
-    component: () => import('../views/SearchMapView.vue')
+    component: () => import('../views/SearchMapView.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/search/results',
     name: 'search-results',
-    component: () => import('../views/SearchResultsView.vue')
+    component: () => import('../views/SearchResultsView.vue'),
+    meta: {
+      requiresAuth: true
+    }
+
   },
   {
     path: '/places/place',
     name: 'places-place',
-    component: () => import('../views/PlacesPlaceView.vue')
+    component: () => import('../views/PlacesPlaceView.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/places/add',
     name: 'places-add',
-    component: () => import('../views/PlacesAddView.vue')
+    component: () => import('../views/PlacesAddView.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
@@ -87,3 +90,23 @@ const router = new VueRouter({
 })
 
 export default router
+
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    console.log(store.getters.getIsLogin)
+
+    // if (window.$cookies.get('token') === null) {
+    if (localStorage.getItem("token") === null) {
+      next('/signup/tenant-natural')
+    } else {
+      next()
+    }
+  } else {
+    if ((to.path.includes("signin") || to.path.includes("signup")) && store.getters.getIsLogin === true) {
+      next('/profile')
+    } else {
+      next()
+    }
+  }
+})

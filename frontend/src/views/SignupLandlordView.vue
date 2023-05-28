@@ -4,7 +4,8 @@
       :title="title"
       :navbar-account="navbarAccount"
       :form="form"
-      :button="button"/>
+      :button="button"
+      :is-landlord="true"/>
   </div>
 </template>
 

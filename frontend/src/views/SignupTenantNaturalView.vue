@@ -5,7 +5,9 @@
       :navbar-account="navbarAccount"
       :tenant-account="tenantAccount"
       :form="form" 
-      :button="button" />
+      :button="button"
+      :is-landlord="false"
+    />
   </div>
 </template>
 
