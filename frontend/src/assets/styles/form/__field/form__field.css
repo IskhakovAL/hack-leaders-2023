@@ -7,32 +7,29 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 20px;
+    padding-left: 10px;
 }
 
 .form__field::placeholder {
   font-size: 16px;
   line-height: 20px;
   color: #CACACA;
-  padding-left: 10px;
 }
 
 .form__field::-webkit-input-placeholder {
   font-size: 16px;
   line-height: 20px;
   color: #CACACA;
-  padding-left: 10px;
 }
   
 .form__field::-moz-placeholder {
   font-size: 16px;
   line-height: 20px;
   color: #CACACA;
-  padding-left: 10px;
 }
   
 .form__field::-ms-input-placeholder {
   font-size: 16px;
   line-height: 20px;
   color: #CACACA;
-  padding-left: 10px;
 }

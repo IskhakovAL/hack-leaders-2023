@@ -28,6 +28,7 @@
                     <input class="field-from-to__field field-from-to__field_size_l" type="date" :min="getTodayDate" placeholder="До">
                 </div>
                 <!-- photo -->
+                <img src="../assets/add-photo-button.svg" alt="">
                 <button class="button button_size_m button_color_pink" type="submit" :disabled="this.$v.$invalid">Добавить</button>
             </div>
         </form>
