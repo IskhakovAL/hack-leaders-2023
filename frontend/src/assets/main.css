@@ -9,6 +9,7 @@
 
 @import url("./styles/form/form.css");
 @import url("./styles/form/__column/form__column.css");
+@import url("./styles/form/__column/_size/form__column_size_l.css");
 @import url("./styles/form/__field/form__field.css");
 
 @import url("./styles/button/button.css");
@@ -18,6 +19,7 @@
 @import url("./styles/button/_color/button_color_white.css");
 
 @import url("./styles/field-from-to/field-from-to.css");
+@import url("./styles/field-from-to/_size/field-from-to_size_l.css");
 @import url("./styles/field-from-to/__title/field-from-to__title.css");
 @import url("./styles/field-from-to/__field/field-from-to__field.css");
 
