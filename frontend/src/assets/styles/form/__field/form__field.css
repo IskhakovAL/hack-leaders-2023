@@ -1,5 +1,5 @@
 .form__field {
-    width: 275px;
+    width: 100%;
     height: 32px;
     box-sizing: border-box;
     border: #FF4261 1px solid;
@@ -13,22 +13,26 @@
   font-size: 16px;
   line-height: 20px;
   color: #CACACA;
+  padding-left: 10px;
 }
 
 .form__field::-webkit-input-placeholder {
   font-size: 16px;
   line-height: 20px;
   color: #CACACA;
+  padding-left: 10px;
 }
   
 .form__field::-moz-placeholder {
   font-size: 16px;
   line-height: 20px;
   color: #CACACA;
+  padding-left: 10px;
 }
   
 .form__field::-ms-input-placeholder {
   font-size: 16px;
   line-height: 20px;
   color: #CACACA;
+  padding-left: 10px;
 }
