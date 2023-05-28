@@ -5,6 +5,12 @@ import HomeView from '../views/HomeView.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  // УДАЛИТЬ УДАЛИТЬ УДАЛИТЬ УДАЛИТЬ
+  {
+    path: '/landing',
+    name: 'landing',
+    component: () => import('../views/LandingView.vue')
+  },
   {
     path: '/',
     name: 'home',
