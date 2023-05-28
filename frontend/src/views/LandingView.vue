@@ -73,6 +73,7 @@ export default {
     background-color: #FAFAFA;
     position: relative;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 .landing-header {

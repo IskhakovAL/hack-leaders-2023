@@ -64,7 +64,7 @@ export default {
     },
 
     methods: {
-      ...mapActions(["signIn", "fetchUser"]),
+      ...mapActions(["signUp", "fetchUser"]),
       ...mapGetters(["getIsLogin", "getUser"]),
         async submit() {
             console.log("submitted");
