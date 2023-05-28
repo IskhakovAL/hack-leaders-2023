@@ -1,0 +1,33 @@
+@import url('./vendor/normalize.css');
+
+@import url("./vendor/fonts.css");
+
+@import url("./styles/list/list.css");
+
+@import url("./styles/navbar/navbar.css");
+@import url("./styles/navbar/__link/navbar__link.css");
+
+@import url("./styles/form/form.css");
+@import url("./styles/form/__column/form__column.css");
+@import url("./styles/form/__field/form__field.css");
+
+@import url("./styles/button/button.css");
+@import url("./styles/button/_size/button_size_s.css");
+@import url("./styles/button/_size/button_size_m.css");
+@import url("./styles/button/_color/button_color_pink.css");
+@import url("./styles/button/_color/button_color_white.css");
+
+@import url("./styles/registration/registration.css");
+@import url("./styles/registration/__title/registration__title.css");
+
+@import url("./styles/header/header.css");
+@import url("./styles/header/__logo/header__logo.css");
+@import url("./styles/header/__navbar/header__navbar.css");
+@import url("./styles/header/__navbar-link/header__navbar-link.css");
+
+@import url("./styles/search-results-cards/search-results-cards.css");
+@import url("./styles/search-results-cards/__card/search-results-cards__card.css");
+@import url("./styles/search-results-cards/__card-image/search-results-cards__card-image.css");
+@import url("./styles/search-results-cards/__card-title/search-results-cards__card-title.css");
+@import url("./styles/search-results-cards/__card-price/search-results-cards__card-price.css");
+@import url("./styles/search-results-cards/__card-metro/search-results-cards__card-metro.css");
